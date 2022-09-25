@@ -3,7 +3,9 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "baseUrl": "src"
+    "baseUrl": "./src",
+    "jsx": "react",
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules"

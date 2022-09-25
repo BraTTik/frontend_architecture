@@ -1,5 +1,10 @@
 import React from "react";
+import { PlayerPage } from "./pages";
 
 export const App = () => {
-    return <div>Init</div>
+    return (
+        <div>
+            <PlayerPage />
+        </div>
+    )
 }

@@ -18,7 +18,14 @@
     "url": "https://github.com/BraTTik/frontend_architecture/issues"
   },
   "homepage": "https://github.com/BraTTik/frontend_architecture#readme",
+  "alias": {
+    "app": "./src/app",
+    "interfaces": "./src/interfaces"
+  },
   "devDependencies": {
+    "@parcel/transformer-sass": "2.7.0",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "eslint": "^8.24.0",

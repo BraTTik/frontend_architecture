@@ -1,7 +1,7 @@
-import { AudioType, IFile, VideoType } from "interfaces";
+import { AudioType, IMediaFile, VideoType } from "interfaces";
 
-export class File<T extends AudioType | VideoType> implements IFile<T> {
-    constructor(public type: T, public filename: string) {
+export class MediaFile<T extends AudioType | VideoType> implements IMediaFile<T> {
+    constructor(public type: T, public filename: string, public length: number) {
     }
 
     getName(): string {

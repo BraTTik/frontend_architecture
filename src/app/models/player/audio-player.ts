@@ -3,7 +3,9 @@ import { Player } from "./player";
 
 export class AudioPlayer<T extends AudioType> extends Player<T> {
     play(): this {
-        this.container.prepend("AudioPlayer\n");
+        if (this.currentTime === 0) {
+            this.container.innerHTML = "AudioPlayer is about to start"
+        }
         return super.play();
     }
 }
