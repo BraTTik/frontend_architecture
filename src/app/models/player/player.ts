@@ -1,8 +1,8 @@
 import {AudioType, IPlayer, VideoType, IMediaFile} from "interfaces";
 
-export class Player<T extends VideoType | AudioType> implements IPlayer<T> {
-    file: IMediaFile<T> | null = null;
-    public currentTime: number = 0;
+export class Player<T extends VideoType | AudioType> implements IPlayer {
+    private file: IMediaFile<T> | null = null;
+    protected currentTime: number = 0;
     private timer: number | null = null;
 
     constructor(protected container: HTMLElement){

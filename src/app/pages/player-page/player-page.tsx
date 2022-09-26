@@ -1,45 +1,21 @@
-import React, {useEffect} from "react";
-import { Player } from "app/models";
-import {Button, MediaPlayer} from "app/components";
-import {AudioType, IMediaFile, VideoType} from "interfaces";
-import {createRandomMediaFile} from "app/pages/player-page/player-page.helpers";
+import React from "react";
+import { Button, MediaPlayer } from "app/components";
+import { IPlayer } from "interfaces";
+import { createRandomMediaFile } from "app/pages/player-page/player-page.helpers";
+import { createPlayer } from "app/models/player-factory";
 
 export const PlayerPage = () => {
-    const playerRef = React.useRef<Player<VideoType | AudioType> | null>(null);
-    const [file, setFile] = React.useState<IMediaFile<VideoType | AudioType>>(null);
-    const [isPlaying, setIsPlaying] = React.useState(false);
+    const playerContainerRef = React.useRef<HTMLDivElement>(null);
+    const [player, setPlayer] = React.useState<IPlayer>(null)
 
     const handleClick = () => {
         const file = createRandomMediaFile(Math.random() > 0.5 ? "My favorite" : "The best track");
-        setFile(file);
+        const player = createPlayer(file, playerContainerRef.current);
+        setPlayer(player);
     }
-
-    const handlePlay = () => {
-        if (file) {
-            playerRef.current.play();
-            setIsPlaying(true)
-        }
-    }
-
-    const handlePause = () => {
-        if (file) {
-            playerRef.current.pause();
-            setIsPlaying(false)
-        }
-    }
-
-    useEffect(() => {
-        if(file) {
-            playerRef.current.load(file);
-            playerRef.current.play();
-            setIsPlaying(true)
-        }
-    }, [file])
-
 
     return <div>
         <Button onClick={handleClick} content={"Сыграть что-нибудь"} />
-        <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
-        <MediaPlayer type={file?.type} player={playerRef} />
+        <MediaPlayer player={player} ref={playerContainerRef} autoplay />
     </div>
 }

@@ -1,24 +1,43 @@
-import React, { MutableRefObject } from "react";
-import {AudioType, IPlayer, VideoType} from "interfaces";
-import { createPlayer } from "app/models/player-factory";
+import React from "react";
+import { IPlayer } from "interfaces";
+import { Button } from "app/components/button";
 import "./media-player.scss";
 
-type MediaPlayerProps<T extends AudioType | VideoType> = { type: T, player: MutableRefObject<IPlayer<T> | null> }
+type MediaPlayerProps = {
+    player: IPlayer | null;
+    autoplay?: boolean;
+}
 
-export const MediaPlayer = React.memo(<T extends AudioType | VideoType>(props: MediaPlayerProps<T>) => {
-    const { type } = props
-    const containerRef = React.useRef<HTMLDivElement>(null);
+export const MediaPlayer = React.forwardRef<HTMLDivElement, MediaPlayerProps>((props: MediaPlayerProps, ref) => {
+    const { player, autoplay } = props;
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    const handlePlay = React.useCallback(() => {
+        if (player) {
+            player.play();
+            setIsPlaying(true)
+        }
+    }, [player])
+
+    const handlePause = React.useCallback(() => {
+        if (player) {
+            player.pause();
+            setIsPlaying(false)
+        }
+    }, [player])
 
     React.useEffect(() => {
-        if (containerRef.current && type) {
-            props.player.current = createPlayer(type, containerRef.current);
+        if (player && autoplay) {
+            handlePlay();
         }
-        return () => {
-            props.player.current?.destroy();
-        }
-    }, [type]);
+    }, [autoplay, player, handlePlay]);
+
+
 
     return (
-        <div ref={containerRef} className="media-player" />
+        <div>
+            <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
+            <div ref={ref} className="media-player" />
+        </div>
     )
 })
