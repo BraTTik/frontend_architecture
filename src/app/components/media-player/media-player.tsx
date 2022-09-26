@@ -26,13 +26,17 @@ export const MediaPlayer = React.forwardRef<HTMLDivElement, MediaPlayerProps>((p
         }
     }, [player])
 
+    const cleanup = React.useCallback(() => {
+        player.destroy()
+    }, [player])
+
     React.useEffect(() => {
         if (player && autoplay) {
             handlePlay();
         }
     }, [autoplay, player, handlePlay]);
 
-
+    React.useEffect(() => cleanup, [cleanup])
 
     return (
         <div>
