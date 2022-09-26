@@ -4,7 +4,7 @@ export type AudioType = "MP3"
 
 export interface IFile<T extends string> {
     type: T;
-    filename: string;
+    name: string;
     getName(): string;
 }
 
