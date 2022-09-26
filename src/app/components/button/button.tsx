@@ -2,7 +2,7 @@ import React from "react";
 import { IButton } from "interfaces"
 
 export const Button = (props: IButton) => {
-    const { onClick, content } = props;
+    const { onClick, content, type = "button" } = props;
 
-    return <button onClick={onClick}>{content}</button>
+    return <button type={type} onClick={onClick}>{content}</button>
 }
