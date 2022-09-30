@@ -21,7 +21,7 @@ export const Modal = React.forwardRef<HTMLDialogElement, React.PropsWithChildren
 
     return (
         <dialog ref={ref} className={cn("modal", className)}>
-            <Button onClick={handleClose} content="X" />
+            <Button className="modal__close-button" onClick={handleClose} content="X" />
             { children }
         </dialog>
     );
