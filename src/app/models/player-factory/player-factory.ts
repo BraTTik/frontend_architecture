@@ -7,7 +7,7 @@ const isVideoType = (value: any): value is VideoType => {
 
 const isAudioType = (value: any): value is AudioType => value === "MP3";
 
-export const createPlayer = <T extends AudioType | VideoType>(file: IMediaFile<T>, container: HTMLElement): IPlayer => {
+export const createPlayer = <T extends AudioType | VideoType>(file: IMediaFile<T>, container: HTMLMediaElement): IPlayer => {
     if (isVideoType(file.type)) {
         const player = new VideoPlayer(container);
         player.load(file as IMediaFile<VideoType>);

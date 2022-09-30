@@ -4,12 +4,11 @@ export type AudioType = "MP3"
 
 export interface IFile<T extends string> {
     type: T;
-    name: string;
     getName(): string;
 }
 
 export interface IMediaFile<T extends VideoType | AudioType> extends IFile<T> {
-    length: number;
+    getPath(): string;
 }
 
 export interface VideoFile<T extends VideoType> extends IMediaFile<T> {}

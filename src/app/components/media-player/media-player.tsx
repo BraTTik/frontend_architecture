@@ -8,7 +8,7 @@ type MediaPlayerProps = {
     autoplay?: boolean;
 }
 
-export const MediaPlayer = React.forwardRef<HTMLDivElement, MediaPlayerProps>((props: MediaPlayerProps, ref) => {
+export const MediaPlayer = React.forwardRef<HTMLVideoElement, MediaPlayerProps>((props: MediaPlayerProps, ref) => {
     const { player, autoplay } = props;
     const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -41,7 +41,7 @@ export const MediaPlayer = React.forwardRef<HTMLDivElement, MediaPlayerProps>((p
     return (
         <div>
             <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
-            <div ref={ref} className="media-player" />
+            <video ref={ref} className="media-player" />
         </div>
     )
 })
