@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, MediaPlayer, Modal } from "app/components";
 import { IPlayer } from "interfaces";
-import { createRandomMediaFile } from "app/pages/player-page/player-page.helpers";
 import { createPlayer } from "app/models/player-factory";
+import {MediaFile} from "app/models";
 
 export const PlayerPage = () => {
     const playerContainerRef = React.useRef<HTMLVideoElement>(null);
@@ -10,11 +10,10 @@ export const PlayerPage = () => {
     const modalRef = React.useRef<HTMLDialogElement>(null)
 
     const handleClick = () => {
-        const file = createRandomMediaFile(Math.random() > 0.5 ? "My favorite" : "The best track");
+        const file = new MediaFile("MP4", "BigBuckBunny", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
         const player = createPlayer(file, playerContainerRef.current);
         setPlayer(player);
         modalRef?.current.showModal();
-        playerContainerRef.current.load()
     }
 
     return <div>

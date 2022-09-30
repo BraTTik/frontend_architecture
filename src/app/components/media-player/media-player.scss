@@ -1,6 +1,6 @@
 .media-player {
-  width: 75vw;
-  height: 55vh;
+  width: fit-content;
+  max-width: calc(100vw - 200px);
   border: 1px solid #ccc;
   display: flex;
   justify-content: center;

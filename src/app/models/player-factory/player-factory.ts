@@ -2,7 +2,7 @@ import {AudioPlayer, VideoPlayer} from "../player";
 import {AudioType, IMediaFile, IPlayer, VideoType} from "interfaces";
 
 const isVideoType = (value: any): value is VideoType => {
-    return value === "AVI" || value === "MKV" || value === "MPEG"  || value === "WebM"
+    return value === "AVI" || value === "MKV" || value === "MPEG"  || value === "WebM" || value === "MP4"
 }
 
 const isAudioType = (value: any): value is AudioType => value === "MP3";

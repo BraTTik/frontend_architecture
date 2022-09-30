@@ -1,5 +1,5 @@
 
-export type VideoType = "AVI" | "MPEG" | "MKV" | "WebM"
+export type VideoType = "AVI" | "MPEG" | "MKV" | "WebM" | "MP4"
 export type AudioType = "MP3"
 
 export interface IFile<T extends string> {

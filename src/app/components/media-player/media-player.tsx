@@ -27,7 +27,7 @@ export const MediaPlayer = React.forwardRef<HTMLVideoElement, MediaPlayerProps>(
     }, [player])
 
     const cleanup = React.useCallback(() => {
-        player.destroy()
+        player?.destroy()
     }, [player])
 
     React.useEffect(() => {
