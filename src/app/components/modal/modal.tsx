@@ -16,7 +16,7 @@ export const Modal = React.forwardRef<HTMLDialogElement, React.PropsWithChildren
     }, [isOpen]);
 
     const handleClose = () => {
-        if (typeof ref !== "function" && ref.current) {
+        if (typeof ref !== "function" && modalRef.current) {
             modalRef.current.close();
             onClose();
         }
