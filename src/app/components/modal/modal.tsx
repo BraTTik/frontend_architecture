@@ -5,7 +5,7 @@ import { ModalProps } from "./modal.types";
 import "./modal.scss";
 
 export const Modal = React.forwardRef<HTMLDialogElement, React.PropsWithChildren<ModalProps>>((props, ref) => {
-    const { children, isOpen, className } = props;
+    const { children, isOpen, className, onClose } = props;
 
     React.useEffect(() =>{
         if (typeof ref !== "function" && ref.current && typeof isOpen === "boolean") {
@@ -16,6 +16,7 @@ export const Modal = React.forwardRef<HTMLDialogElement, React.PropsWithChildren
     const handleClose = () => {
         if (typeof ref !== "function" && ref.current) {
             ref.current.close();
+            onClose();
         }
     }
 
