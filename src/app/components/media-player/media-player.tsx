@@ -28,8 +28,8 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
 
     React.useEffect(() => cleanup, [cleanup])
 
-    if(!player) {
-        return <div>Loading...</div>
+    if (!player) {
+        return null;
     }
 
     return (

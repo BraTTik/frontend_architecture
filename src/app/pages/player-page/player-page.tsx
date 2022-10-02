@@ -8,7 +8,7 @@ export const PlayerPage = () => {
     const [player, setPlayer] = React.useState<ReactPlayer>(null)
 
     const handleClick = () => {
-        const file = new MediaFile("MP4", "BigBuckBunny", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        const file = new MediaFile("MP4", "BigBuckBunny", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Big.Buck.Bunny.-.Opening.Screen.png/640px-Big.Buck.Bunny.-.Opening.Screen.png");
         const player = createPlayer(file);
         setPlayer(player);
     }
