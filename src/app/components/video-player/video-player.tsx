@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import cn from "classnames";
 import { Button } from "app/components/button";
+import { Modal } from "app/components/modal";
 import { useRefAssign } from "app/shared";
 import * as Types from "./video-player.types";
 import "./video-player.scss";
@@ -20,29 +21,37 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerP
         if (props.autoPlay) {
             setIsPlaying(true);
         }
-    }, [props.autoPlay])
+    }, [props.autoPlay]);
 
     const handlePlay = useCallback(() => {
         if (videoRef.current) {
             videoRef.current.play();
             setIsPlaying(true);
         }
-    }, [])
+    }, []);
 
     const handlePause = React.useCallback(() => {
-        videoRef.current.pause();
-        setIsPlaying(false);
-    }, [])
+        if (videoRef.current) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+        }
+    }, []);
 
     const toggleRollup = React.useCallback(() => {
         setIsRolled(prev => !prev)
-    }, [])
+    }, []);
 
-    return <div className="video-player">
-        <video ref={assignRef} className="video-player__video" />
-        <div className="video-player__controls">
-            <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
-            <Button className={cn("video-player__button", isBeingPlayed ? "pause" : "play" )} onClick={isBeingPlayed ? handlePause : handlePlay} content="" />
-        </div>
-    </div>
-})
+    const onModalClose = useCallback(() => {
+        handlePause();
+    }, [handlePause]);
+
+    return (
+        <Modal onClose={onModalClose} isOpen>
+            <video ref={assignRef} className="video-player__video" />
+            <div className="video-player__controls">
+                <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
+                <Button className={cn("video-player__button", isBeingPlayed ? "pause" : "play" )} onClick={isBeingPlayed ? handlePause : handlePlay} content="" />
+            </div>
+        </Modal>
+    );
+});
