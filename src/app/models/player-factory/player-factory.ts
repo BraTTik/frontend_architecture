@@ -1,5 +1,5 @@
-import {AudioPlayer, VideoPlayer} from "../player";
-import {AudioType, IMediaFile, IPlayer, VideoType} from "interfaces";
+import {AudioType, IMediaFile, VideoType, ReactPlayer} from "interfaces";
+import {VideoPlayer} from "app/models/player/video-player/video-player";
 
 const isVideoType = (value: any): value is VideoType => {
     return value === "AVI" || value === "MKV" || value === "MPEG"  || value === "WebM" || value === "MP4"
@@ -7,14 +7,8 @@ const isVideoType = (value: any): value is VideoType => {
 
 const isAudioType = (value: any): value is AudioType => value === "MP3";
 
-export const createPlayer = <T extends AudioType | VideoType>(file: IMediaFile<T>, container: HTMLMediaElement): IPlayer => {
-    if (isVideoType(file.type)) {
-        const player = new VideoPlayer(container);
-        player.load(file as IMediaFile<VideoType>);
-        return player;
-    } else if (isAudioType(file.type)) {
-        const player = new AudioPlayer(container);
-        player.load(file as IMediaFile<AudioType>);
-        return player;
-    }
+export const createPlayer = <T extends AudioType | VideoType>(file: IMediaFile): ReactPlayer => {
+    const player =  new VideoPlayer();
+    player.load(file);
+    return player;
 }

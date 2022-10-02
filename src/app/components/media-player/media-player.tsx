@@ -1,28 +1,18 @@
 import React from "react";
-import { IPlayer } from "interfaces";
-import { Button } from "app/components/button";
+import { ReactPlayer } from "interfaces";
 import "./media-player.scss";
 
 type MediaPlayerProps = {
-    player: IPlayer | null;
+    player: ReactPlayer | null;
     autoplay?: boolean;
 }
 
-export const MediaPlayer = React.forwardRef<HTMLVideoElement, MediaPlayerProps>((props: MediaPlayerProps, ref) => {
+export const MediaPlayer = (props: MediaPlayerProps) => {
     const { player, autoplay } = props;
-    const [isPlaying, setIsPlaying] = React.useState(false);
 
     const handlePlay = React.useCallback(() => {
         if (player) {
             player.play();
-            setIsPlaying(true)
-        }
-    }, [player])
-
-    const handlePause = React.useCallback(() => {
-        if (player) {
-            player.pause();
-            setIsPlaying(false)
         }
     }, [player])
 
@@ -38,10 +28,13 @@ export const MediaPlayer = React.forwardRef<HTMLVideoElement, MediaPlayerProps>(
 
     React.useEffect(() => cleanup, [cleanup])
 
+    if(!player) {
+        return <div>Loading...</div>
+    }
+
     return (
         <div>
-            <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
-            <video ref={ref} className="media-player" />
+            { player.render({ autoplay }) }
         </div>
     )
-})
+}
