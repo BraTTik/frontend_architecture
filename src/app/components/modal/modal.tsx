@@ -3,25 +3,27 @@ import cn from "classnames";
 import {Button} from "app/components/button";
 import { ModalProps } from "./modal.types";
 import "./modal.scss";
+import {useRefAssign} from "app/shared";
 
 export const Modal = React.forwardRef<HTMLDialogElement, React.PropsWithChildren<ModalProps>>((props, ref) => {
     const { children, isOpen, className, onClose } = props;
+    const [modalRef, assignRef] = useRefAssign(ref);
 
     React.useEffect(() =>{
-        if (typeof ref !== "function" && ref.current && typeof isOpen === "boolean") {
-            isOpen ? ref.current.close() : ref.current.showModal();
+        if (modalRef.current && typeof isOpen === "boolean") {
+            isOpen && !modalRef.current.open ? modalRef.current.showModal() : modalRef.current.close();
         }
     }, [isOpen]);
 
     const handleClose = () => {
         if (typeof ref !== "function" && ref.current) {
-            ref.current.close();
+            modalRef.current.close();
             onClose();
         }
     }
 
     return (
-        <dialog ref={ref} className={cn("modal", className)}>
+        <dialog ref={assignRef} className={cn("modal", className)}>
             <Button className="modal__close-button" onClick={handleClose} content="X" />
             { children }
         </dialog>
