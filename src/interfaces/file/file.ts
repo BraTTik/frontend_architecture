@@ -8,6 +8,7 @@ export interface IFile {
 
 export interface IMediaFile extends IFile {
     getPath(): string;
+    getPoster(): string;
 }
 
 export interface VideoFile<T extends VideoType> extends IMediaFile {
