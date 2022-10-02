@@ -22,7 +22,7 @@ export const PlayerPage = () => {
     return <div>
         <Button onClick={handleClick} content={"Сыграть что-нибудь"} />
         <Modal ref={modalRef} onClose={onModalClose}>
-            <MediaPlayer player={player} autoplay />
+            <MediaPlayer player={player} autoPlay />
         </Modal>
     </div>
 }

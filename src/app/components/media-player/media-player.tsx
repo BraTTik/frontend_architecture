@@ -4,11 +4,11 @@ import "./media-player.scss";
 
 type MediaPlayerProps = {
     player: ReactPlayer | null;
-    autoplay?: boolean;
+    autoPlay?: boolean;
 }
 
 export const MediaPlayer = (props: MediaPlayerProps) => {
-    const { player, autoplay } = props;
+    const { player, autoPlay } = props;
 
     const handlePlay = React.useCallback(() => {
         if (player) {
@@ -21,10 +21,10 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
     }, [player])
 
     React.useEffect(() => {
-        if (player && autoplay) {
+        if (player && autoPlay) {
             handlePlay();
         }
-    }, [autoplay, player, handlePlay]);
+    }, [autoPlay, player, handlePlay]);
 
     React.useEffect(() => cleanup, [cleanup])
 
@@ -34,7 +34,7 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
 
     return (
         <div>
-            { player.render({ autoplay }) }
+            { player.render({ autoPlay }) }
         </div>
     )
 }

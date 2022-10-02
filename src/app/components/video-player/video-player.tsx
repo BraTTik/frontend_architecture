@@ -1,16 +1,26 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
+import cn from "classnames";
 import { Button } from "app/components/button";
 import { useRefAssign } from "app/shared";
 import * as Types from "./video-player.types";
+import "./video-player.scss";
 
-export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerProps>((props, ref) => {
-    const [isPlaying, setIsPlaying] = React.useState(props.isPlaying);
-    const [isRolled, setIsRolled] = React.useState(props.isRolled);
+export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerProps & React.MediaHTMLAttributes<HTMLVideoElement>>((props, ref) => {
+    const { isPlaying, isRolled, } = props;
+    const [isBeingPlayed, setIsPlaying] = React.useState(isPlaying);
+    const [isBeingRolled, setIsRolled] = React.useState(isRolled);
     const [videoRef, assignRef] = useRefAssign<HTMLVideoElement>(ref);
 
+
     useEffect(() => {
-        setIsPlaying(props.isPlaying)
-    }, [props.isPlaying]);
+        setIsPlaying(isPlaying)
+    }, [isPlaying]);
+
+    useEffect(() => {
+        if (props.autoPlay) {
+            setIsPlaying(true);
+        }
+    }, [props.autoPlay])
 
     const handlePlay = useCallback(() => {
         if (videoRef.current) {
@@ -28,11 +38,11 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerP
         setIsRolled(prev => !prev)
     }, [])
 
-    return <div>
-        <video ref={assignRef} className="media-player" />
-        <div className="media-player__controls">
-            <Button onClick={toggleRollup} content="Свернуть" />
-            <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
+    return <div className="video-player">
+        <video ref={assignRef} className="video-player__video" />
+        <div className="video-player__controls">
+            <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
+            <Button className={cn("video-player__button", isBeingPlayed ? "pause" : "play" )} onClick={isBeingPlayed ? handlePause : handlePlay} content="" />
         </div>
     </div>
 })

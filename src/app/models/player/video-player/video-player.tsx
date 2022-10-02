@@ -39,7 +39,7 @@ export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P
 
     render(props?: P): React.FunctionComponentElement<HTMLVideoElement> {
         const Component = this.Component;
-        return <Component ref={this.assignRef} { ...props } isPlaying={this.isPlaying} />;
+        return <Component ref={this.assignRef} { ...props } isPlaying={this.isPlaying ?? props?.isPlaying} />;
     }
 
     private assignRef = (node: HTMLVideoElement | null ) => {
