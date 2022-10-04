@@ -14,13 +14,20 @@ export type TPlayerOptions = {
     autoplay?: boolean;
 }
 
-export interface IPlayerConnectedViewProps {
+export interface IPlayerPresentationProps {
     player:IPlayer;
 }
 
-export interface IPlayerViewProps extends IPlayerConnectedViewProps{
+export interface IPlayerModalProps extends IPlayerPresentationProps {
+    isRolled: boolean;
+    toggleRollup: () => void;
+}
+
+export interface IPlayerViewProps extends IPlayerPresentationProps{
     state: TPlayerViewState;
 }
+
+export interface IPlayerModalViewProps extends IPlayerModalProps, IPlayerViewProps {}
 
 export interface IPlayerStore {
     state: TPlayerViewState;

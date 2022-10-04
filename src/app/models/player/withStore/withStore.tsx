@@ -1,8 +1,14 @@
 import React, {useReducer} from "react";
-import {IPlayerViewProps, TPlayerViewState, TPlayerAction, IPlayerStore} from "../../../../interfaces";
+import {
+    IPlayerViewProps,
+    TPlayerViewState,
+    TPlayerAction,
+    IPlayerStore,
+    IPlayerPresentationProps
+} from "../../../../interfaces";
 
-export function withStore(Component:React.FC<IPlayerViewProps>) {
-    return function ({player}:IPlayerViewProps) {
+export function withStore<T extends IPlayerPresentationProps = IPlayerPresentationProps>(Component:React.FC<IPlayerViewProps>):React.FC {
+    return function (props:T) {
         const initialState:TPlayerViewState = {
             playing: false,
         }
@@ -27,8 +33,8 @@ export function withStore(Component:React.FC<IPlayerViewProps>) {
             dispatch
         }
 
-        player.setStore(playerStore);
+        props.player.setStore(playerStore);
 
-        return <Component player={player} state={state}/>
+        return <Component {...props} state={state}/>
     }
 }

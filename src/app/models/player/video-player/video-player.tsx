@@ -25,14 +25,14 @@ export class VideoPlayer implements IPlayer {
     }
 
     destroy(): void {
-        if (this.store.state.playing) {
+        if (this.store?.state.playing) {
             this.player_tag.pause();
             this.store.dispatch("pause");
         }
     }
 
     pause(): void {
-        if (this.store.state.playing) {
+        if (this.store?.state.playing) {
             this.player_tag.pause();
             this.store.dispatch("pause");
         }
