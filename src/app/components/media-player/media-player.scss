@@ -6,3 +6,100 @@
   justify-content: center;
   align-items: center;
 }
+
+.video-player {
+  &__rolled {
+    top: 20px;
+    bottom: unset;
+  }
+
+  &__video.rolled {
+    max-width: 480px;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  &__start-button__wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__start-button {
+    position: relative;
+    display: block;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      border: 2px solid #010101aa;
+    }
+
+    &::after {
+      content: "";
+      min-width: 30px;
+      min-height: 30px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image:  url('./assets/arrow-right.png');
+      background-position: center center;
+      background-size: contain;
+      border-radius: 50%;
+      border: 2px solid #010101aa;
+    }
+
+    &:hover {
+      img,
+      &::after {
+        border: 2px solid #010101cc;
+      }
+    }
+  }
+
+  &__button {
+    display: block;
+    min-width: 30px;
+    min-height: 30px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    border-radius: 10px;
+    background-position: center center;
+    transition: background-size .1s;
+    padding: 2px;
+
+    &:hover {
+      background-size: 90%;
+    }
+
+    &.roll {
+      background-image: url('./assets/arrows-inside.png');
+    }
+
+    &.unroll {
+      background-image: url('./assets/arrows-outside.png');
+      transform: rotate(90deg);
+    }
+
+    &.play {
+      background-image: url('./assets/arrow-right.png');
+    }
+
+    &.pause {
+      background-image: url('./assets/pause.png');
+    }
+  }
+}

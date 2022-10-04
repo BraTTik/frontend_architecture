@@ -1,41 +1,76 @@
-import React from "react";
-import { ReactPlayer } from "interfaces";
+import React, {useCallback, useEffect} from "react";
 import "./media-player.scss";
-import {VideoPlayer} from "../video-player";
+
+import {IPlayer} from "../../../interfaces";
+import {StartButton} from "./video-player.start-button";
+import {Modal} from "../modal";
+import cn from "classnames";
+import {Button} from "../button";
+import {useRefAssign} from "../../shared";
 
 type MediaPlayerProps = {
-    player: ReactPlayer | null;
-    autoPlay?: boolean;
+    player: IPlayer;
 }
 
-export const MediaPlayer = (props: MediaPlayerProps) => {
-    const { player, autoPlay } = props;
+export const MediaPlayer = ({ player }: MediaPlayerProps) => {
+    const [isVideoOpen, setIsVideoOpen] = React.useState(false);
+    const [isBeingRolled, setIsRolled] = React.useState(false);
+    const [videoRef, assignRef] = useRefAssign<HTMLVideoElement>(player.assignRef);
 
-    const handlePlay = React.useCallback(() => {
-        if (player) {
+    const modalRef = React.useRef<HTMLDialogElement>(null);
+
+    const handleStartPlay = useCallback(() => {
+        if (modalRef.current) {
+            // @ts-ignore
+            modalRef.current.showModal();
+            setIsVideoOpen(true);
             player.play();
         }
-    }, [player])
+    }, []);
 
-    const cleanup = React.useCallback(() => {
-        player?.destroy()
-    }, [player])
-
-    React.useEffect(() => {
-        if (player && autoPlay) {
-            handlePlay();
+    useEffect(() => {
+        if (player.hasAutoplay()) {
+            handleStartPlay();
         }
-    }, [autoPlay, player, handlePlay]);
+    }, [])
+
+    const cleanup = () => {
+        player.destroy;
+    }
+
 
     React.useEffect(() => cleanup, [cleanup])
 
-    if (!player) {
-        return null;
+
+    const toggleRollup = () => {
+        setIsRolled(prev => !prev)
+    }
+
+    const onModalClose = () => {
+        player.pause();
+        setIsVideoOpen(false);
+    }
+
+    const pause = () => {
+        player.pause();
+    }
+
+    const play = () => {
+        player.play()
     }
 
     return (
         <div>
-            <VideoPlayer autoPlay  ref={player.assignRef} poster={player.getPoster()} isPlaying={player.isPlaying()}/>
+            <div className="video-player__start-button__wrapper">
+                { !isVideoOpen && <StartButton onClick={handleStartPlay} poster={player.getPoster()} /> }
+            </div>
+            <Modal ref={modalRef} onClose={onModalClose} className={cn("video-player", isBeingRolled && "video-player__rolled")}>
+                <video poster={player.getPoster()} ref={assignRef} className={cn("video-player__video", isBeingRolled && "rolled")} />
+                <div className="video-player__controls">
+                    <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
+                    <Button className={cn("video-player__button", player.isPlaying() ? "pause" : "play" )} onClick={player.isPlaying() ? pause : play} content="" />
+                </div>
+            </Modal>
         </div>
-    )
+    );
 }

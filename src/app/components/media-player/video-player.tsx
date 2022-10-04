@@ -5,7 +5,7 @@ import { Modal } from "app/components/modal";
 import { useRefAssign } from "app/shared";
 import * as Types from "./video-player.types";
 import "./video-player.scss";
-import {StartButton} from "app/components/video-player/video-player.start-button";
+import {StartButton} from "./video-player.start-button";
 
 export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerProps & React.MediaHTMLAttributes<HTMLVideoElement>>((props, ref) => {
     const { isPlaying, isRolled, poster, } = props;

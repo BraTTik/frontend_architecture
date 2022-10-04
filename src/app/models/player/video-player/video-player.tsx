@@ -1,49 +1,47 @@
 import React from "react";
-import {IMediaFile, ReactPlayer} from "interfaces";
-import { VideoPlayer as Component} from "app/components";
+import {IMediaFile, IPlayer, TPlayerOptions, VideoType} from "interfaces";
+import {IFilesQueue} from "./filesQueue";
+import {getUid} from "./helpers/getUid";
 
-export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P> {
-    private Component = Component;
-    private player: React.MutableRefObject<HTMLVideoElement> = { current: null };
+export class VideoPlayer implements IPlayer {
+    private player_tag: HTMLVideoElement | null = null;
     private playing = false;
-    private files: IMediaFile[] = [];
+    private ready = false;
+    private file:IMediaFile<VideoType> | null;
+    private autoplay:boolean;
+    private uid:number = getUid();
 
-    play(): this {
-        if (this.player.current && this.files.length > 0) {
-            /** fixme: сделать выбор проигрываемого файла */
-            this.player.current.src = this.files[0].getPath();
-            this.player.current.play();
-            this.playing = true;
-        }
-        return this;
+    constructor(private queue: IFilesQueue<VideoType>, options?:TPlayerOptions) {
+        this.file = queue.get();
+        this.autoplay = Boolean(options?.autoplay);
     }
 
-    load(file: IMediaFile | IMediaFile[]): this {
-        this.files = Array.isArray(file) ? file : [file];
-        return this;
+    play():void {
+        if (!this.ready) {
+            return;
+        }
+        if (this.ready) {
+            this.player_tag.src = this.file.getPath();
+            this.player_tag.play();
+            this.playing = true;
+        }
     }
 
     destroy(): void {
-        if (this.player.current) {
-            this.player.current.pause();
+        if (this.isPlaying()) {
+            this.player_tag.pause();
         }
     }
 
-    pause(): this {
-        if (this.player.current) {
-            this.player.current.pause();
+    pause(): void {
+        if (this.isPlaying()) {
+            this.player_tag.pause();
             this.playing = false;
         }
-        return undefined;
-    }
-
-    render(props?: P): React.FunctionComponentElement<HTMLVideoElement> {
-        const Component = this.Component;
-        return <Component ref={this.assignRef} { ...props } poster={this.files[0].getPoster()} isPlaying={this.playing ?? props?.isPlaying} />;
     }
 
     getPoster(): string {
-        return this.files[0].getPoster();
+        return this.file.getPoster();
     }
 
     isPlaying():boolean {
@@ -51,6 +49,25 @@ export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P
     }
 
     assignRef = (node: HTMLVideoElement | null ) => {
-        this.player.current = node;
+        this.player_tag = node;
+        this.init();
+    }
+
+    isReady(): boolean {
+        return this.ready;
+    }
+
+    hasAutoplay(): boolean {
+        return this.autoplay;
+    }
+
+    getId(): number {
+        return this.uid;
+    }
+
+    private init() {
+        if (this.player_tag && this.file) {
+            this.ready = true;
+        }
     }
 }

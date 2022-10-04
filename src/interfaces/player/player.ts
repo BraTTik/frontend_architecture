@@ -1,14 +1,15 @@
-import { IMediaFile } from "interfaces/file";
-
 export interface IPlayer {
-    play(): this;
-    pause(): this;
-    load(file: IMediaFile | IMediaFile[]): this;
+    play(): void;
+    pause(): void;
     destroy(): void;
+    assignRef(node: HTMLVideoElement | null ):void;
+    isPlaying():boolean;
+    isReady():boolean;
+    getPoster():string;
+    hasAutoplay():boolean;
+    getId():number;
 }
 
-export interface ReactPlayer<P  extends Record<string, any> = {}> extends IPlayer {
-    assignRef(node: HTMLVideoElement | null ):void;
-    getPoster():string;
-    isPlaying():boolean;
+export type TPlayerOptions = {
+    autoplay?: boolean;
 }
