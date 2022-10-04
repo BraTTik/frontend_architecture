@@ -5,18 +5,13 @@ export interface IPlayer {
     assignRef(node: HTMLVideoElement | null ):void;
     isReady():boolean;
     getPoster():string;
-    hasAutoplay():boolean;
     getId():number;
     setStore(store:IPlayerStore):void;
     getFileSrc():string;
 }
 
-export type TPlayerOptions = {
-    autoplay?: boolean;
-}
-
 export interface IPlayerPresentationProps {
-    player:IPlayer;
+    player: IPlayer;
 }
 
 export interface IPlayerModalProps extends IPlayerPresentationProps {

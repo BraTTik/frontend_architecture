@@ -10,15 +10,7 @@ import {MediaPlayerView} from "./MediaPlayerView";
 
 export const MediaPlayer:React.FC<IPlayerPresentationProps> = ({ player }) => {
     const [isVideoOpen, setIsVideoOpen] = React.useState(false);
-    const [isRolled, setIsRolled] = React.useState(true);
-
-    const init = () => {
-        if (player.hasAutoplay()) {
-            setIsVideoOpen(true);
-        }
-    }
-
-    useLayoutEffect(init, [])
+    const [isRolled, setIsRolled] = React.useState(false);
 
     const showModal = () => {
         setIsVideoOpen(true);

@@ -1,31 +1,28 @@
 import React from "react";
-import {IMediaFile, IPlayer, IPlayerStore, TPlayerOptions, VideoType} from "interfaces";
+import {IMediaFile, IPlayer, IPlayerStore, VideoType} from "interfaces";
 import {IFilesQueue} from "./filesQueue";
 import {getUid} from "./helpers/getUid";
 
 export class VideoPlayer implements IPlayer {
     private player_tag: HTMLVideoElement | null = null;
     private file:IMediaFile<VideoType>;
-    private autoplay:boolean;
     private uid:number = getUid();
     private store:IPlayerStore | undefined;
 
-    constructor(private queue: IFilesQueue<VideoType>, options?:TPlayerOptions) {
+    constructor(private queue: IFilesQueue<VideoType>) {
         const currentFile = queue.get();
         if (!currentFile) {
             throw new Error("Queue is empty");
         }
         this.file = currentFile;
-        this.autoplay = Boolean(options?.autoplay);
     }
 
     play():void {
         if (!this.isReady()) {
             return;
         }
-        // this.player_tag.src = this.file.getPath();
-        // this.player_tag.play();
-        // this.store.dispatch("play");
+        this.player_tag.play();
+        this.store.dispatch("play");
     }
 
     destroy(): void {
@@ -36,10 +33,10 @@ export class VideoPlayer implements IPlayer {
     }
 
     pause(): void {
-        // if (this.store?.state.playing) {
+        if (this.store?.state.playing) {
             this.player_tag.pause();
-            // this.store.dispatch("pause");
-        // }
+            this.store.dispatch("pause");
+        }
     }
 
     getPoster(): string {
@@ -52,10 +49,6 @@ export class VideoPlayer implements IPlayer {
 
     isReady(): boolean {
         return Boolean(this.player_tag && this.file && this.store);
-    }
-
-    hasAutoplay(): boolean {
-        return this.autoplay;
     }
 
     getId(): number {
