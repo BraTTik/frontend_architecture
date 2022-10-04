@@ -1,18 +1,17 @@
 import React, {useCallback, useEffect} from "react";
 import "./media-player.scss";
 
-import {IPlayer} from "../../../interfaces";
+import {IPlayerConnectedViewProps, IPlayerViewProps} from "../../../interfaces";
 import {StartButton} from "./video-player.start-button";
 import {Modal} from "../modal";
 import cn from "classnames";
 import {Button} from "../button";
 import {useRefAssign} from "../../shared";
+import {withStore} from "../../models/player/withStore/withStore";
 
-type MediaPlayerProps = {
-    player: IPlayer;
-}
 
-export const MediaPlayer = ({ player }: MediaPlayerProps) => {
+const MediaPlayerView:React.FC<IPlayerViewProps> = ({ player, state }) => {
+    const { playing } = state;
     const [isVideoOpen, setIsVideoOpen] = React.useState(false);
     const [isBeingRolled, setIsRolled] = React.useState(false);
     const [videoRef, assignRef] = useRefAssign<HTMLVideoElement>(player.assignRef);
@@ -32,14 +31,14 @@ export const MediaPlayer = ({ player }: MediaPlayerProps) => {
         if (player.hasAutoplay()) {
             handleStartPlay();
         }
-    }, [])
+    }, [player])
 
     const cleanup = () => {
         player.destroy;
     }
 
 
-    React.useEffect(() => cleanup, [cleanup])
+    React.useEffect(() => cleanup, [])
 
 
     const toggleRollup = () => {
@@ -68,9 +67,11 @@ export const MediaPlayer = ({ player }: MediaPlayerProps) => {
                 <video poster={player.getPoster()} ref={assignRef} className={cn("video-player__video", isBeingRolled && "rolled")} />
                 <div className="video-player__controls">
                     <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
-                    <Button className={cn("video-player__button", player.isPlaying() ? "pause" : "play" )} onClick={player.isPlaying() ? pause : play} content="" />
+                    <Button className={cn("video-player__button", playing ? "pause" : "play" )} onClick={playing ? pause : play} content="" />
                 </div>
             </Modal>
         </div>
     );
 }
+
+export const MediaPlayer:React.FC<IPlayerConnectedViewProps> = withStore(MediaPlayerView);

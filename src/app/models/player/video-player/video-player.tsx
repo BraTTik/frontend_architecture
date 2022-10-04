@@ -1,15 +1,14 @@
 import React from "react";
-import {IMediaFile, IPlayer, TPlayerOptions, VideoType} from "interfaces";
+import {IMediaFile, IPlayer, IPlayerStore, TPlayerOptions, VideoType} from "interfaces";
 import {IFilesQueue} from "./filesQueue";
 import {getUid} from "./helpers/getUid";
 
 export class VideoPlayer implements IPlayer {
     private player_tag: HTMLVideoElement | null = null;
-    private playing = false;
-    private ready = false;
     private file:IMediaFile<VideoType> | null;
     private autoplay:boolean;
     private uid:number = getUid();
+    private store:IPlayerStore | undefined;
 
     constructor(private queue: IFilesQueue<VideoType>, options?:TPlayerOptions) {
         this.file = queue.get();
@@ -17,26 +16,25 @@ export class VideoPlayer implements IPlayer {
     }
 
     play():void {
-        if (!this.ready) {
+        if (!this.isReady()) {
             return;
         }
-        if (this.ready) {
-            this.player_tag.src = this.file.getPath();
-            this.player_tag.play();
-            this.playing = true;
-        }
+        this.player_tag.src = this.file.getPath();
+        this.player_tag.play();
+        this.store.dispatch("play");
     }
 
     destroy(): void {
-        if (this.isPlaying()) {
+        if (this.store.state.playing) {
             this.player_tag.pause();
+            this.store.dispatch("pause");
         }
     }
 
     pause(): void {
-        if (this.isPlaying()) {
+        if (this.store.state.playing) {
             this.player_tag.pause();
-            this.playing = false;
+            this.store.dispatch("pause");
         }
     }
 
@@ -44,17 +42,12 @@ export class VideoPlayer implements IPlayer {
         return this.file.getPoster();
     }
 
-    isPlaying():boolean {
-        return this.playing
-    }
-
     assignRef = (node: HTMLVideoElement | null ) => {
         this.player_tag = node;
-        this.init();
     }
 
     isReady(): boolean {
-        return this.ready;
+        return Boolean(this.player_tag && this.file && this.store);
     }
 
     hasAutoplay(): boolean {
@@ -65,9 +58,8 @@ export class VideoPlayer implements IPlayer {
         return this.uid;
     }
 
-    private init() {
-        if (this.player_tag && this.file) {
-            this.ready = true;
-        }
+    setStore(store: IPlayerStore) {
+        this.store = store;
     }
+
 }
