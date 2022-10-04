@@ -5,13 +5,17 @@ import {getUid} from "./helpers/getUid";
 
 export class VideoPlayer implements IPlayer {
     private player_tag: HTMLVideoElement | null = null;
-    private file:IMediaFile<VideoType> | null;
+    private file:IMediaFile<VideoType>;
     private autoplay:boolean;
     private uid:number = getUid();
     private store:IPlayerStore | undefined;
 
     constructor(private queue: IFilesQueue<VideoType>, options?:TPlayerOptions) {
-        this.file = queue.get();
+        const currentFile = queue.get();
+        if (!currentFile) {
+            throw new Error("Queue is empty");
+        }
+        this.file = currentFile;
         this.autoplay = Boolean(options?.autoplay);
     }
 
@@ -19,9 +23,9 @@ export class VideoPlayer implements IPlayer {
         if (!this.isReady()) {
             return;
         }
-        this.player_tag.src = this.file.getPath();
-        this.player_tag.play();
-        this.store.dispatch("play");
+        // this.player_tag.src = this.file.getPath();
+        // this.player_tag.play();
+        // this.store.dispatch("play");
     }
 
     destroy(): void {
@@ -32,10 +36,10 @@ export class VideoPlayer implements IPlayer {
     }
 
     pause(): void {
-        if (this.store?.state.playing) {
+        // if (this.store?.state.playing) {
             this.player_tag.pause();
-            this.store.dispatch("pause");
-        }
+            // this.store.dispatch("pause");
+        // }
     }
 
     getPoster(): string {
@@ -60,6 +64,10 @@ export class VideoPlayer implements IPlayer {
 
     setStore(store: IPlayerStore) {
         this.store = store;
+    }
+
+    getFileSrc(): string {
+        return this.file?.getPath();
     }
 
 }

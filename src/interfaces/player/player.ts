@@ -8,6 +8,7 @@ export interface IPlayer {
     hasAutoplay():boolean;
     getId():number;
     setStore(store:IPlayerStore):void;
+    getFileSrc():string;
 }
 
 export type TPlayerOptions = {

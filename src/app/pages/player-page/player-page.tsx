@@ -3,6 +3,7 @@ import { Button, MediaPlayer } from "app/components";
 import {IMediaFile, IPlayer, VideoType} from "interfaces";
 import {MediaFile, VideoPlayer} from "app/models";
 import {FilesQueue} from "../../models/player/video-player/filesQueue";
+import {MediaPlayerView} from "../../components/media-player/MediaPlayerView";
 
 
 
@@ -21,6 +22,6 @@ export const PlayerPage = () => {
     }
 
     return (
-        <MediaPlayer player={player} key={player.getId()}/>
+        <MediaPlayerView player={player} key={player.getId()}/>
     )
 }
