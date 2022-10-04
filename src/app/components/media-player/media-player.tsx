@@ -1,6 +1,7 @@
 import React from "react";
 import { ReactPlayer } from "interfaces";
 import "./media-player.scss";
+import {VideoPlayer} from "../video-player";
 
 type MediaPlayerProps = {
     player: ReactPlayer | null;
@@ -34,7 +35,7 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
 
     return (
         <div>
-            { player.render({ autoPlay }) }
+            <VideoPlayer autoPlay  ref={player.assignRef} poster={player.getPoster()} isPlaying={player.isPlaying()}/>
         </div>
     )
 }

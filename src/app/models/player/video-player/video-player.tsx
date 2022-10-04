@@ -5,7 +5,7 @@ import { VideoPlayer as Component} from "app/components";
 export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P> {
     private Component = Component;
     private player: React.MutableRefObject<HTMLVideoElement> = { current: null };
-    private isPlaying = false;
+    private playing = false;
     private files: IMediaFile[] = [];
 
     play(): this {
@@ -13,7 +13,7 @@ export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P
             /** fixme: сделать выбор проигрываемого файла */
             this.player.current.src = this.files[0].getPath();
             this.player.current.play();
-            this.isPlaying = true;
+            this.playing = true;
         }
         return this;
     }
@@ -32,17 +32,25 @@ export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P
     pause(): this {
         if (this.player.current) {
             this.player.current.pause();
-            this.isPlaying = false;
+            this.playing = false;
         }
         return undefined;
     }
 
     render(props?: P): React.FunctionComponentElement<HTMLVideoElement> {
         const Component = this.Component;
-        return <Component ref={this.assignRef} { ...props } poster={this.files[0].getPoster()} isPlaying={this.isPlaying ?? props?.isPlaying} />;
+        return <Component ref={this.assignRef} { ...props } poster={this.files[0].getPoster()} isPlaying={this.playing ?? props?.isPlaying} />;
     }
 
-    private assignRef = (node: HTMLVideoElement | null ) => {
+    getPoster(): string {
+        return this.files[0].getPoster();
+    }
+
+    isPlaying():boolean {
+        return this.playing
+    }
+
+    assignRef = (node: HTMLVideoElement | null ) => {
         this.player.current = node;
     }
 }

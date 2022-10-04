@@ -8,5 +8,7 @@ export interface IPlayer {
 }
 
 export interface ReactPlayer<P  extends Record<string, any> = {}> extends IPlayer {
-    render(props?: P): React.ReactElement;
+    assignRef(node: HTMLVideoElement | null ):void;
+    getPoster():string;
+    isPlaying():boolean;
 }
