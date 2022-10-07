@@ -1,48 +1,58 @@
 import React from "react";
-import {IMediaFile, ReactPlayer} from "interfaces";
-import { VideoPlayer as Component} from "app/components";
+import { IMediaFile, IPlayer, IPlayerStore } from "interfaces";
+import { FileManager } from "interfaces/file/file-manager";
+import { MediaFileManager } from "app/models/file-manager";
 
-export class VideoPlayer<P extends Record<string, any>> implements ReactPlayer<P> {
-    private Component = Component;
-    private player: React.MutableRefObject<HTMLVideoElement> = { current: null };
-    private isPlaying = false;
-    private files: IMediaFile[] = [];
+export class VideoPlayer implements IPlayer {
+    private player: HTMLVideoElement | null = null;
+    private files: FileManager<IMediaFile> = new MediaFileManager();
+    private store: IPlayerStore | null = null;
 
     play(): this {
-        if (this.player.current && this.files.length > 0) {
-            /** fixme: сделать выбор проигрываемого файла */
-            this.player.current.src = this.files[0].getPath();
-            this.player.current.play();
-            this.isPlaying = true;
+        if (this.isReady()) {
+            this.player.play();
+            this.store?.actions.setIsPlaying(true);
         }
         return this;
     }
 
     load(file: IMediaFile | IMediaFile[]): this {
-        this.files = Array.isArray(file) ? file : [file];
+        this.files.setFiles(Array.isArray(file) ? file : [file]);
         return this;
     }
 
     destroy(): void {
-        if (this.player.current) {
-            this.player.current.pause();
+        if (this.isReady()) {
+            this.player.pause();
+            this.player = null;
         }
     }
 
     pause(): this {
-        if (this.player.current) {
-            this.player.current.pause();
-            this.isPlaying = false;
+        if (this.isReady()) {
+            this.player.pause();
+            this.store?.actions.setIsPlaying(false);
         }
         return undefined;
     }
 
-    render(props?: P): React.FunctionComponentElement<HTMLVideoElement> {
-        const Component = this.Component;
-        return <Component ref={this.assignRef} { ...props } poster={this.files[0].getPoster()} isPlaying={this.isPlaying ?? props?.isPlaying} />;
+    isReady(): boolean {
+        return Boolean(this.player) && Boolean(this.files.getActiveFile());
     }
 
-    private assignRef = (node: HTMLVideoElement | null ) => {
-        this.player.current = node;
+    getCurrentVideoSrc(): string {
+        return this.files.getActiveFile().getPath();
+    }
+
+    getCurrentPosterSrc(): string {
+        return this.files.getActiveFile().getPoster();
+    }
+
+    assignElement(node: HTMLVideoElement) {
+        this.player = node;
+    }
+
+    addStore(store: IPlayerStore) {
+        this.store = store;
     }
 }

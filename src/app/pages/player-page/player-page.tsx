@@ -1,19 +1,20 @@
-import React from "react";
-import { Button, MediaPlayer } from "app/components";
-import { ReactPlayer } from "interfaces";
+import React, { useEffect } from "react";
+import { MediaPlayer } from "app/components";
+import { IPlayer } from "interfaces";
 import { createPlayer } from "app/models/player-factory";
 import {MediaFile} from "app/models";
 
-export const PlayerPage = () => {
-    const [player, setPlayer] = React.useState<ReactPlayer>(null)
+const filePath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const poster = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Big.Buck.Bunny.-.Opening.Screen.png/640px-Big.Buck.Bunny.-.Opening.Screen.png";
 
-    const handleClick = () => {
-        const file = new MediaFile("MP4", "BigBuckBunny", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Big.Buck.Bunny.-.Opening.Screen.png/640px-Big.Buck.Bunny.-.Opening.Screen.png");
+export const PlayerPage = () => {
+    const [player, setPlayer] = React.useState<IPlayer>(null)
+
+    useEffect(() => {
+        const file = new MediaFile("MP4", "BigBuckBunny", filePath, poster);
         const player = createPlayer(file);
         setPlayer(player);
-    }
-    return <div>
-        <Button onClick={handleClick} content={"Сыграть что-нибудь"} />
-        <MediaPlayer player={player} autoPlay />
-    </div>
+    }, [])
+
+    return <MediaPlayer player={player} />
 }

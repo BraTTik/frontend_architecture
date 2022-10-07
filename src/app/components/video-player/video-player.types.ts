@@ -1,5 +1,6 @@
+import {IPlayer, IPlayerStore} from "interfaces";
+
 export type VideoPlayerProps = {
-    isPlaying?: boolean;
-    isRolled?: boolean;
-    poster?: string;
+    player: IPlayer;
+    store: IPlayerStore;
 }

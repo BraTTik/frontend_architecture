@@ -1,73 +1,41 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import { Button } from "app/components/button";
-import { Modal } from "app/components/modal";
-import { useRefAssign } from "app/shared";
 import * as Types from "./video-player.types";
 import "./video-player.scss";
-import {StartButton} from "app/components/video-player/video-player.start-button";
 
-export const VideoPlayer = React.forwardRef<HTMLVideoElement, Types.VideoPlayerProps & React.MediaHTMLAttributes<HTMLVideoElement>>((props, ref) => {
-    const { isPlaying, isRolled, poster, } = props;
-    const modalRef = React.useRef<HTMLDialogElement>(null);
-    const [isVideoOpen, setIsVideoOpen] = React.useState(false);
-    const [isBeingPlayed, setIsPlaying] = React.useState(isPlaying);
-    const [isBeingRolled, setIsRolled] = React.useState(isRolled);
-    const [videoRef, assignRef] = useRefAssign<HTMLVideoElement>(ref);
+export const VideoPlayer: React.FC<Types.VideoPlayerProps> = (props) => {
+    const { player, store } = props;
+    const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    const handleStartPlay = useCallback(() => {
-        if (modalRef.current) {
-            modalRef.current.showModal();
-            setIsVideoOpen(true);
-            handlePlay();
-        }
-    }, []);
+    const { isRolledUp } = store.state;
+    const { actions } = store;
 
-    useEffect(() => {
-        setIsPlaying(isPlaying)
-    }, [isPlaying]);
+    React.useEffect(() => {
+        player.assignElement(videoRef.current);
+    }, [])
 
-    useEffect(() => {
-        if (props.autoPlay) {
-            handleStartPlay();
-        }
-    }, [props.autoPlay, handleStartPlay]);
+    React.useEffect(() => {})
 
     const handlePlay = useCallback(() => {
-        if (videoRef.current) {
-            videoRef.current.play();
-            setIsPlaying(true);
-        }
-    }, []);
+        player.play();
+    }, [player]);
 
     const handlePause = React.useCallback(() => {
-        if (videoRef.current) {
-            videoRef.current.pause();
-            setIsPlaying(false);
-        }
-    }, []);
+        player.pause();
+    }, [player]);
 
-    const toggleRollup = React.useCallback(() => {
-        setIsRolled(prev => !prev)
-    }, []);
-
-    const onModalClose = useCallback(() => {
-        handlePause();
-        setIsVideoOpen(false);
-    }, [handlePause]);
+    const toggleRollup = () => {
+        actions.setIsRolledUp(!isRolledUp)
+    }
 
     return (
         <div>
-            <div className="video-player__start-button__wrapper">
-                { !isVideoOpen && <StartButton onClick={handleStartPlay} poster={poster} /> }
+            <video poster={player.getCurrentPosterSrc()} src={player.getCurrentVideoSrc()} ref={videoRef} className={cn("video-player__video", isRolledUp && "rolled")} />
+            <div className="video-player__controls">
+                <Button className={cn("video-player__button", isRolledUp ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
+                <Button className={cn("video-player__button", store.state.isPlaying ? "pause" : "play" )} onClick={store.state.isPlaying ? handlePause : handlePlay} content="" />
             </div>
-            <Modal ref={modalRef} onClose={onModalClose} className={cn("video-player", isBeingRolled && "video-player__rolled")}>
-                <video poster={poster} ref={assignRef} className={cn("video-player__video", isBeingRolled && "rolled")} />
-                <div className="video-player__controls">
-                    <Button className={cn("video-player__button", isBeingRolled ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
-                    <Button className={cn("video-player__button", isBeingPlayed ? "pause" : "play" )} onClick={isBeingPlayed ? handlePause : handlePlay} content="" />
-                </div>
-            </Modal>
         </div>
     );
-});
+};

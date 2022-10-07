@@ -1,40 +1,42 @@
 import React from "react";
-import { ReactPlayer } from "interfaces";
+import { IPlayer } from "interfaces";
+import cn from "classnames";
+import { VideoPlayer } from "app/components/video-player";
+import { Modal } from "app/components/modal";
+import { StartButton } from "app/components/video-player/video-player.start-button";
+import { useMediaPlayerStore } from "./use-media-player-store";
 import "./media-player.scss";
 
 type MediaPlayerProps = {
-    player: ReactPlayer | null;
-    autoPlay?: boolean;
+    player: IPlayer | null;
 }
 
 export const MediaPlayer = (props: MediaPlayerProps) => {
-    const { player, autoPlay } = props;
+    const { player } = props;
+    const modalRef = React.useRef<HTMLDialogElement>(null)
+    const store = useMediaPlayerStore();
 
-    const handlePlay = React.useCallback(() => {
-        if (player) {
-            player.play();
-        }
-    }, [player])
+    player?.addStore(store);
 
-    const cleanup = React.useCallback(() => {
-        player?.destroy()
-    }, [player])
+    const handleStartPlay = React.useCallback(() => {
+        modalRef.current.showModal();
+    }, [])
 
-    React.useEffect(() => {
-        if (player && autoPlay) {
-            handlePlay();
-        }
-    }, [autoPlay, player, handlePlay]);
-
-    React.useEffect(() => cleanup, [cleanup])
+    const handleClose = React.useCallback(() => {
+        modalRef.current.close();
+    }, []);
 
     if (!player) {
-        return null;
+        return ;
     }
 
+    // isRolled && "video-player__rolled"
     return (
         <div>
-            { player.render({ autoPlay }) }
+            <StartButton onClick={handleStartPlay} poster={player.getCurrentPosterSrc()} />
+            <Modal ref={modalRef} onClose={handleClose} className={cn("video-player",)}>
+                <VideoPlayer player={player} store={store} />
+            </Modal>
         </div>
     )
 }
