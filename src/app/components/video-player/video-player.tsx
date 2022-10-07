@@ -11,11 +11,9 @@ export const VideoPlayer: React.FC<Types.VideoPlayerProps> = (props) => {
     const { isRolledUp } = store.state;
     const { actions } = store;
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         player.assignElement(videoRef.current);
-    }, [])
-
-    React.useEffect(() => {})
+    }, [player]);
 
     const handlePlay = useCallback(() => {
         player.play();
