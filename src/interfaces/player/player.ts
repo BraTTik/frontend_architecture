@@ -1,6 +1,7 @@
 import { IMediaFile } from "interfaces/file";
 
 export interface IPlayer {
+    getId(): number;
     play(): this;
     pause(): this;
     load(file: IMediaFile | IMediaFile[]): this;
@@ -14,12 +15,10 @@ export interface IPlayer {
 
 export type PlayerState = {
     isPlaying: boolean;
-    isRolledUp: boolean;
 }
 
 export type PlayerActions = {
     setIsPlaying: (playing: boolean) => void;
-    setIsRolledUp: (isRolled: boolean) => void;
 }
 
 export interface IPlayerStore {

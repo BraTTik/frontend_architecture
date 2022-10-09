@@ -1,5 +1,5 @@
 export type ModalProps = {
-    isOpen?: boolean;
+    isOpen: boolean;
     className?: string;
     onClose?: () => void;
 }

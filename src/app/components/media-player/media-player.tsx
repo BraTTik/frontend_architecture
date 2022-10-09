@@ -13,23 +13,23 @@ type MediaPlayerProps = {
 
 export const MediaPlayer = (props: MediaPlayerProps) => {
     const { player } = props;
-    const modalRef = React.useRef<HTMLDialogElement>(null);
     const [isOpen, setIsOpen] = React.useState(false);
+    const [isRolledUp, setIsRolledUp] = React.useState(false);
     const store = useMediaPlayerStore();
 
     player.addStore(store);
 
-    const handleStartPlay = React.useCallback(() => {
-        modalRef.current.showModal();
+    const handleStartPlay = () => {
         setIsOpen(true);
         player.play();
-    }, [player])
+    };
 
-    const handleClose = React.useCallback(() => {
-        modalRef.current.close();
+    const handleClose = () => {
         setIsOpen(false);
         player.pause();
-    }, [player]);
+    };
+
+    const toggleRollup = () => setIsRolledUp(prev => !prev);
 
     return (
         <div>
@@ -38,8 +38,8 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
                     <StartButton onClick={handleStartPlay} poster={player.getCurrentPosterSrc()} />
                 </div>
             )}
-            <Modal ref={modalRef} onClose={handleClose} className={cn(store.state.isRolledUp && "media-player__rolled")}>
-                <VideoPlayer player={player} store={store} />
+            <Modal onClose={handleClose} className={cn(isRolledUp && "media-player__rolled")} isOpen={isOpen}>
+                <VideoPlayer player={player} state={store.state} isRolledUp={isRolledUp} toggleRollup={toggleRollup} />
             </Modal>
         </div>
     )

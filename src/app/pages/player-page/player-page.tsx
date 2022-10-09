@@ -17,5 +17,5 @@ export const PlayerPage = () => {
     }, [])
 
     if (!player) return null;
-    return <MediaPlayer player={player} />
+    return <MediaPlayer player={player} key={player.getId()} />
 }
