@@ -1,11 +1,10 @@
 import React from "react";
 import { IMediaFile, IPlayer, IPlayerStore } from "interfaces";
-import { FileManager } from "interfaces/file/file-manager";
-import { MediaFileManager } from "app/models/file-manager";
+import { LinkedList } from "app/models/linked-list";
 
 export class VideoPlayer implements IPlayer {
     private player: HTMLVideoElement | null = null;
-    private files: FileManager<IMediaFile> = new MediaFileManager();
+    private files: LinkedList<IMediaFile> = new LinkedList<IMediaFile>();
     private store: IPlayerStore | null = null;
 
     play(): this {
@@ -16,8 +15,8 @@ export class VideoPlayer implements IPlayer {
         return this;
     }
 
-    load(file: IMediaFile | IMediaFile[]): this {
-        this.files.setFiles(Array.isArray(file) ? file : [file]);
+    load(files: [IMediaFile]): this {
+        files.forEach(file => this.files.add(file));
         return this;
     }
 
@@ -37,15 +36,15 @@ export class VideoPlayer implements IPlayer {
     }
 
     isReady(): boolean {
-        return Boolean(this.player) && Boolean(this.files.getActiveFile());
+        return Boolean(this.player && this.files.current());
     }
 
     getCurrentVideoSrc(): string {
-        return this.files.getActiveFile().getPath();
+        return this.files.current().getPath();
     }
 
     getCurrentPosterSrc(): string {
-        return this.files.getActiveFile().getPoster();
+        return this.files.current().getPoster();
     }
 
     assignElement(node: HTMLVideoElement) {
