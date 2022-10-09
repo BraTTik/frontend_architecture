@@ -16,5 +16,6 @@ export const PlayerPage = () => {
         setPlayer(player);
     }, [])
 
+    if (!player) return null;
     return <MediaPlayer player={player} />
 }

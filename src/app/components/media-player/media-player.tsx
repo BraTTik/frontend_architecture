@@ -8,7 +8,7 @@ import { StartButton } from "./media-player.start-button";
 import "./media-player.scss";
 
 type MediaPlayerProps = {
-    player: IPlayer | null;
+    player: IPlayer;
 }
 
 export const MediaPlayer = (props: MediaPlayerProps) => {
@@ -17,7 +17,7 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const store = useMediaPlayerStore();
 
-    player?.addStore(store);
+    player.addStore(store);
 
     const handleStartPlay = React.useCallback(() => {
         modalRef.current.showModal();
@@ -31,13 +31,13 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
         player.pause();
     }, [player]);
 
-    if (!player) {
-        return ;
-    }
-
     return (
         <div>
-            { !isOpen && <div className="media-player__button-wrapper"><StartButton onClick={handleStartPlay} poster={player.getCurrentPosterSrc()} /></div> }
+            { !isOpen && (
+                <div className="media-player__button-wrapper">
+                    <StartButton onClick={handleStartPlay} poster={player.getCurrentPosterSrc()} />
+                </div>
+            )}
             <Modal ref={modalRef} onClose={handleClose} className={cn(store.state.isRolledUp && "media-player__rolled")}>
                 <VideoPlayer player={player} store={store} />
             </Modal>
