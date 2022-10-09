@@ -1,8 +1,8 @@
-import {IPlayer, PlayerState} from "interfaces";
+import { IPlayer } from "interfaces";
 
 export type VideoPlayerProps = {
     player: IPlayer;
-    state: PlayerState;
     toggleRollup: () => void;
     isRolledUp: boolean;
+    isPlaying: boolean;
 }
