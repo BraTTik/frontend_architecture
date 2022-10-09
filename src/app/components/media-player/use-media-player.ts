@@ -1,5 +1,5 @@
 import {useMemo, useReducer} from "react";
-import {IPlayer, IPlayerStore, PlayerState} from "interfaces";
+import {IPlayer, IPlayerStore, PlayerState} from "app/models/player";
 
 type PlayerActionType = "play" | "pause";
 

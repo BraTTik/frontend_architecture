@@ -1,10 +1,10 @@
-import { IMediaFile } from "interfaces/file";
+import { IMediaFile } from "app/models/file";
 
 export interface IPlayer {
     getId(): number;
     play(): void;
     pause(): void;
-    load(file: IMediaFile | IMediaFile[]): this;
+    load(file: IMediaFile[]): this;
     destroy(): void;
     isReady(): boolean;
     getCurrentPosterSrc(): string;

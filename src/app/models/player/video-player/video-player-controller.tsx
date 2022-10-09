@@ -1,7 +1,8 @@
 import React from "react";
-import { IMediaFile, IPlayer, IPlayerStore } from "interfaces";
+import { IMediaFile } from "app/models/file";
 import { LinkedList } from "app/models/linked-list";
 import { createId } from "app/shared";
+import { IPlayer, IPlayerStore } from "../types";
 
 export class VideoPlayerController implements IPlayer {
     private readonly id: number;

@@ -1,5 +1,5 @@
-import {ILinkedItem, ILinkedList} from "interfaces/linked-list";
-import {LinkedItem} from "./linked-item";
+import { ILinkedItem, ILinkedList } from "./types";
+import { LinkedItem } from "./linked-item";
 
 export class LinkedList<T> implements ILinkedList<T> {
     private items: ILinkedItem<T>[] = [];

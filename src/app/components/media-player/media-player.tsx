@@ -1,5 +1,5 @@
 import React from "react";
-import { IPlayer } from "interfaces";
+import { IPlayer } from "app/models";
 import cn from "classnames";
 import { VideoPlayer } from "app/components/video-player";
 import { Modal } from "app/components/modal";

@@ -1,5 +1,4 @@
-import { ILinkedItem } from "interfaces/linked-list";
-
+import { ILinkedItem } from "./types";
 
 export class LinkedItem<T> implements ILinkedItem<T> {
     constructor(private value: T, private prevLink: ILinkedItem<T> = null, private nextLink: ILinkedItem<T> = null) {
