@@ -5,7 +5,7 @@ import { createId } from "app/shared";
 
 export class VideoPlayerController implements IPlayer {
     private readonly id: number;
-    private player: HTMLVideoElement | null = null;
+    private videoTag: HTMLVideoElement | null = null;
     private files: LinkedList<IMediaFile> = new LinkedList<IMediaFile>();
     private store: IPlayerStore | null = null;
 
@@ -15,7 +15,7 @@ export class VideoPlayerController implements IPlayer {
 
     play() {
         if (this.isReady()) {
-            this.player.play();
+            this.videoTag.play();
             this.store.actions.setIsPlaying(true);
         }
     }
@@ -31,20 +31,20 @@ export class VideoPlayerController implements IPlayer {
 
     destroy() {
         if (this.isReady()) {
-            this.player.pause();
-            this.player = null;
+            this.videoTag.pause();
+            this.videoTag = null;
         }
     }
 
     pause() {
         if (this.isReady()) {
-            this.player.pause();
+            this.videoTag.pause();
             this.store.actions.setIsPlaying(false);
         }
     }
 
     isReady(): boolean {
-        return Boolean(this.player && this.files.current() && this.store);
+        return Boolean(this.videoTag && this.files.current() && this.store);
     }
 
     getCurrentVideoSrc(): string {
@@ -56,7 +56,7 @@ export class VideoPlayerController implements IPlayer {
     }
 
     assignElement(node: HTMLVideoElement) {
-        this.player = node;
+        this.videoTag = node;
     }
 
     addStore(store: IPlayerStore) {
