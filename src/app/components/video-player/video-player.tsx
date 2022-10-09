@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React  from "react";
 import cn from "classnames";
 import { Button } from "app/components/button";
 import * as Types from "./video-player.types";
@@ -15,13 +15,13 @@ export const VideoPlayer: React.FC<Types.VideoPlayerProps> = (props) => {
         player.assignElement(videoRef.current);
     }, [player]);
 
-    const handlePlay = useCallback(() => {
+    const handlePlay = () => {
         player.play();
-    }, [player]);
+    }
 
-    const handlePause = React.useCallback(() => {
+    const handlePause = () => {
         player.pause();
-    }, [player]);
+    }
 
     const toggleRollup = () => {
         actions.setIsRolledUp(!isRolledUp)
