@@ -3,7 +3,7 @@ import { IMediaFile, IPlayer, IPlayerStore } from "interfaces";
 import { LinkedList } from "app/models/linked-list";
 import { createId } from "app/shared";
 
-export class VideoPlayer implements IPlayer {
+export class VideoPlayerController implements IPlayer {
     private readonly id: number;
     private player: HTMLVideoElement | null = null;
     private files: LinkedList<IMediaFile> = new LinkedList<IMediaFile>();
@@ -13,12 +13,11 @@ export class VideoPlayer implements IPlayer {
         this.id = createId();
     }
 
-    play(): this {
+    play() {
         if (this.isReady()) {
             this.player.play();
-            this.store?.actions.setIsPlaying(true);
+            this.store.actions.setIsPlaying(true);
         }
-        return this;
     }
 
     getId(): number {
@@ -30,23 +29,22 @@ export class VideoPlayer implements IPlayer {
         return this;
     }
 
-    destroy(): void {
+    destroy() {
         if (this.isReady()) {
             this.player.pause();
             this.player = null;
         }
     }
 
-    pause(): this {
+    pause() {
         if (this.isReady()) {
             this.player.pause();
-            this.store?.actions.setIsPlaying(false);
+            this.store.actions.setIsPlaying(false);
         }
-        return undefined;
     }
 
     isReady(): boolean {
-        return Boolean(this.player && this.files.current());
+        return Boolean(this.player && this.files.current() && this.store);
     }
 
     getCurrentVideoSrc(): string {

@@ -2,8 +2,8 @@ import { IMediaFile } from "interfaces/file";
 
 export interface IPlayer {
     getId(): number;
-    play(): this;
-    pause(): this;
+    play(): void;
+    pause(): void;
     load(file: IMediaFile | IMediaFile[]): this;
     destroy(): void;
     isReady(): boolean;
