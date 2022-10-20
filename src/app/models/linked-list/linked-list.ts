@@ -7,7 +7,11 @@ export class LinkedList<T> implements ILinkedList<T> {
 
     add(item: T): T {
         const last = this.getLastLink();
-        const link = new LinkedItem(item, last);
+        const link = new LinkedItem(item);
+        if (last) {
+            link.setPrev(last);
+            last.setNext(link);
+        }
         if (!this.currentItem) this.currentItem = link;
         this.items.push(link);
         return item;

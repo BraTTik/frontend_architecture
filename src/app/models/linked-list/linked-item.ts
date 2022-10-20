@@ -1,21 +1,21 @@
 import { ILinkedItem } from "./types";
 
 export class LinkedItem<T> implements ILinkedItem<T> {
-    constructor(private value: T, private prevLink: ILinkedItem<T> = null, private nextLink: ILinkedItem<T> = null) {
-        if (prevLink) {
-            prevLink.linkNext(this);
-        }
+    public prevLink: ILinkedItem<T>;
+    public nextLink: ILinkedItem<T>;
+
+    constructor(private value: T) {
     }
 
     getValue(): T {
         return this.value;
     }
 
-    linkNext(value: ILinkedItem<T>) {
+    setNext(value: ILinkedItem<T>) {
         return this.nextLink = value;
     }
 
-    linkPrev(value: ILinkedItem<T>) {
+    setPrev(value: ILinkedItem<T>) {
         return this.prevLink = value;
     }
 
