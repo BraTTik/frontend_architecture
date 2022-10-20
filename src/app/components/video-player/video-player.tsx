@@ -5,7 +5,7 @@ import * as Types from "./video-player.types";
 import "./video-player.scss";
 
 export const VideoPlayer: React.FC<Types.VideoPlayerProps> = (props) => {
-    const { player, isPlaying, isRolledUp, toggleRollup } = props;
+    const { player, isRolledUp, toggleRollup } = props;
 
     const initPlayer = (node: HTMLVideoElement | null) => {
         if(node) {
@@ -26,7 +26,7 @@ export const VideoPlayer: React.FC<Types.VideoPlayerProps> = (props) => {
             <video poster={player.getCurrentPosterSrc()} src={player.getCurrentVideoSrc()} ref={initPlayer} className={cn("video-player__video", isRolledUp && "rolled")} />
             <div className="video-player__controls">
                 <Button className={cn("video-player__button", isRolledUp ? "unroll" : "roll" )} onClick={toggleRollup} content="" />
-                <Button className={cn("video-player__button", isPlaying ? "pause" : "play" )} onClick={isPlaying ? handlePause : handlePlay} content="" />
+                <Button className={cn("video-player__button", player.isPlaying ? "pause" : "play" )} onClick={player.isPlaying ? handlePause : handlePlay} content="" />
             </div>
         </div>
     );

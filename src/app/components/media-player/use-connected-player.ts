@@ -1,5 +1,5 @@
 import {useMemo, useReducer} from "react";
-import {IPlayer, IPlayerStore, PlayerState} from "app/models/player";
+import {IConnectedPlayer, IPlayer, IPlayerStore, PlayerState} from "app/models/player";
 
 type PlayerActionType = "play" | "pause";
 
@@ -31,10 +31,9 @@ export const useMediaStore = (): IPlayerStore => {
     }), [dispatch, state])
 }
 
-export const useMediaPlayer = (player: IPlayer) => {
+export const useConnectedPlayer = (player: IPlayer): IConnectedPlayer => {
     const store = useMediaStore();
     player.addStore(store);
-    const { state: { isPlaying } } = store;
 
-    return { player, isPlaying };
+    return player as IConnectedPlayer;
 }

@@ -13,6 +13,10 @@ export interface IPlayer {
     addStore(store: IPlayerStore): void;
 }
 
+export interface IConnectedPlayer extends IPlayer {
+    isPlaying: boolean;
+}
+
 export type PlayerState = {
     isPlaying: boolean;
 }

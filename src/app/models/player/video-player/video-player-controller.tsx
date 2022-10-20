@@ -2,9 +2,9 @@ import React from "react";
 import { IMediaFile } from "app/models/file";
 import { LinkedList } from "app/models/linked-list";
 import { createId } from "app/shared";
-import { IPlayer, IPlayerStore } from "../types";
+import { IConnectedPlayer, IPlayerStore } from "../types";
 
-export class VideoPlayerController implements IPlayer {
+export class VideoPlayerController implements IConnectedPlayer {
     private readonly id: number;
     private videoTag: HTMLVideoElement | null = null;
     private files: LinkedList<IMediaFile> = new LinkedList<IMediaFile>();
@@ -12,6 +12,13 @@ export class VideoPlayerController implements IPlayer {
 
     constructor() {
         this.id = createId();
+    }
+
+    get isPlaying(): boolean {
+        if (this.isReady()) {
+            return this.store.state.isPlaying;
+        }
+        return false;
     }
 
     play() {
