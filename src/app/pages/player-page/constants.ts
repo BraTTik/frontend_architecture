@@ -1,12 +1,13 @@
 import { Tab } from "app/components/tabs/types";
+import { MediaPlayerMode } from "app/components";
 
 export const tabItems: Tab[] = [
     {
-        id: "video",
+        id: MediaPlayerMode.Video,
         title: "Видео"
     },
     {
-        id: "stories",
+        id: MediaPlayerMode.Stories,
         title: "Сторис"
     }
 ]
