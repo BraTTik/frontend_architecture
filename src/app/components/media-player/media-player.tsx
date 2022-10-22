@@ -14,16 +14,16 @@ type MediaPlayerProps = {
 export const MediaPlayer = (props: MediaPlayerProps) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isRolledUp, setIsRolledUp] = React.useState(false);
-    const player = useConnectedPlayer(props.player);
+    const connectedPlayer = useConnectedPlayer(props.player);
 
     const handleStartPlay = () => {
         setIsOpen(true);
-        player.play();
+        connectedPlayer.play();
     };
 
     const handleClose = () => {
         setIsOpen(false);
-        player.pause();
+        connectedPlayer.pause();
     };
 
     const toggleRollup = () => setIsRolledUp(prev => !prev);
@@ -32,11 +32,11 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
         <div>
             { !isOpen && (
                 <div className="media-player__button-wrapper">
-                    <StartButton onClick={handleStartPlay} poster={player.getCurrentPosterSrc()} />
+                    <StartButton onClick={handleStartPlay} poster={connectedPlayer.getCurrentPosterSrc()} />
                 </div>
             )}
             <Modal onClose={handleClose} className={cn(isRolledUp && "media-player__rolled")} isOpen={isOpen}>
-                <VideoPlayer player={player} isRolledUp={isRolledUp} toggleRollup={toggleRollup} />
+                <VideoPlayer player={connectedPlayer} isRolledUp={isRolledUp} toggleRollup={toggleRollup} />
             </Modal>
         </div>
     )
