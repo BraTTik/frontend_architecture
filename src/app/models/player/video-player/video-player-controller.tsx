@@ -15,7 +15,7 @@ export class VideoPlayerController implements IConnectedPlayer {
     }
 
     get isPlaying(): boolean {
-        if (this.store) {
+        if (this.isReady()) {
             return this.store.state.isPlaying;
         }
         return false;
@@ -52,15 +52,16 @@ export class VideoPlayerController implements IConnectedPlayer {
     }
 
     isReady(): boolean {
-        if (!this.store) {
-            throw new Error("Store is sufficient. Connect player to the store through 'addStore' method")
-        }
-        if (!this.videoTag) {
-            throw new Error("Video container is sufficient. Assign HTMLVideoElement through 'assignElement' method")
-        }
-        if (!this.files.current()) {
-            throw new Error("No video files has been added. Add files with 'load' method")
-        }
+        // Fixme: сделать обработку ошибок как-то иначе
+        // if (!this.store) {
+        //     throw new Error("Store is sufficient. Connect player to the store through 'addStore' method")
+        // }
+        // if (!this.videoTag) {
+        //     throw new Error("Video container is sufficient. Assign HTMLVideoElement through 'assignElement' method")
+        // }
+        // if (!this.files.current()) {
+        //     throw new Error("No video files has been added. Add files with 'load' method")
+        // }
         return Boolean(this.videoTag && this.files.current() && this.store);
     }
 
