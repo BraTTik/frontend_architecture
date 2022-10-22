@@ -6,5 +6,13 @@ type StoriesPlayerProps = {
 }
 
 export const StoriesPlayer = (props: StoriesPlayerProps) => {
-    return <div>Here goes Stories player</div>
+    const { player } = props;
+
+    const initPlayer = (node: HTMLVideoElement | null) => {
+        if(node) {
+            player.assignElement(node);
+        }
+    }
+
+    return <video poster={player.getCurrentVideoSrc()} ref={initPlayer}></video>
 }

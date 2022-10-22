@@ -1,6 +1,6 @@
-import { AudioType, IMediaFile, VideoType } from "./types";
+import { IMediaFile } from "./types";
 
-export class MediaFile<T extends AudioType | VideoType> implements IMediaFile {
+export class MediaFile<T extends string> implements IMediaFile {
     constructor(private type: T, private name: string, private path: string, private poster: string) {
     }
 

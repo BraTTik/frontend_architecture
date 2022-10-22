@@ -9,7 +9,7 @@ export interface IPlayer {
     isReady(): boolean;
     getCurrentPosterSrc(): string;
     getCurrentVideoSrc(): string;
-    assignElement(element: HTMLVideoElement): void;
+    assignElement(element: HTMLMediaElement): void;
     addStore(store: IPlayerStore): void;
 }
 
