@@ -42,11 +42,11 @@ export const MediaPlayer = (props: MediaPlayerProps) => {
                 </div>
             )}
             <Modal onClose={handleClose} className={cn(isRolledUp && "media-player__rolled")} isOpen={isOpen}>
-                <TabSwitch value={mode}>
-                    <Tab value={MediaPlayerMode.Video}>
+                <TabSwitch<MediaPlayerMode> value={mode}>
+                    <Tab<MediaPlayerMode> value="Video">
                         <VideoPlayer player={connectedPlayer} isRolledUp={isRolledUp} toggleRollup={toggleRollup} />
                     </Tab>
-                    <Tab value={MediaPlayerMode.Stories}>
+                    <Tab<MediaPlayerMode> value="Stories">
                         <StoriesPlayer player={connectedPlayer} />
                     </Tab>
                 </TabSwitch>

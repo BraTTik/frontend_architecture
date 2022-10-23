@@ -1,6 +1,6 @@
 import React from "react";
-import {TabSwitchProps} from "app/components/tabs/tab-switch/types";
+import {TabSwitchProps} from "./types";
 
-export const Tab = (props: TabSwitchProps) => {
-    return <>{props.children}</>
+export const Tab:<T extends (string | number)>(props: TabSwitchProps<T>) => React.ReactElement  = ({children}: {children: React.ReactNode}) => {
+    return <>{children}</>
 }

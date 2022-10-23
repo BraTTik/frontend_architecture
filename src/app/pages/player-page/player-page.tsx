@@ -8,7 +8,7 @@ import {getFiles} from "app/pages/player-page/helpers";
 
 export const PlayerPage = () => {
     const [player, setPlayer] = React.useState<IPlayer>(null);
-    const [tab, setTab] = React.useState<MediaPlayerMode>(MediaPlayerMode.Video);
+    const [tab, setTab] = React.useState<MediaPlayerMode>("Video");
 
     useEffect(() => {
         const files = getFiles(tab);
