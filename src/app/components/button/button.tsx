@@ -1,8 +1,14 @@
 import React from "react";
 import { IButton } from "interfaces"
 
-export const Button = (props: IButton) => {
-    const { onClick, content, type = "button" } = props;
+interface IButtonProps extends IButton {
+    className?: string
+}
 
-    return <button type={type} onClick={onClick}>{content}</button>
+const defaultButtonType = "button" as const;
+
+export const Button = (props: IButtonProps) => {
+    const { onClick, content, type = defaultButtonType, className } = props;
+
+    return <button className={className} type={type} onClick={onClick}>{content}</button>
 }

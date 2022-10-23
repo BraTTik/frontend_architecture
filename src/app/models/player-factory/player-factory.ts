@@ -1,20 +1,16 @@
-import {AudioPlayer, VideoPlayer} from "../player";
-import {AudioType, IMediaFile, IPlayer, VideoType} from "interfaces";
+import {IMediaFile} from "app/models/file";
+import {IPlayer} from "app/models/player";
+import {VideoPlayerController} from "app/models/player/video-player/video-player-controller";
+import {MediaPlayerMode} from "app/components";
+import {StoriesPlayerController} from "app/models/player/stories-player";
 
-const isVideoType = (value: any): value is VideoType => {
-    return value === "AVI" || value === "MKV" || value === "MPEG"  || value === "WebM"
-}
-
-const isAudioType = (value: any): value is AudioType => value === "MP3";
-
-export const createPlayer = <T extends AudioType | VideoType>(file: IMediaFile<T>, container: HTMLElement): IPlayer => {
-    if (isVideoType(file.type)) {
-        const player = new VideoPlayer(container);
-        player.load(file as IMediaFile<VideoType>);
-        return player;
-    } else if (isAudioType(file.type)) {
-        const player = new AudioPlayer(container);
-        player.load(file as IMediaFile<AudioType>);
-        return player;
+export const createPlayer = (files: IMediaFile[], mode: MediaPlayerMode): IPlayer => {
+    switch (mode) {
+        case MediaPlayerMode.Video: {
+            return new VideoPlayerController().load(files);
+        }
+        case MediaPlayerMode.Stories: {
+            return new StoriesPlayerController().load(files)
+        }
     }
 }

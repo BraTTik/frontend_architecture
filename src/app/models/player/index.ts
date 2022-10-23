@@ -1,3 +1,3 @@
-export * from "./audio-player";
 export * from "./video-player";
-export * from "./player";
+export * from "./types";
+export * from "./stories-player";

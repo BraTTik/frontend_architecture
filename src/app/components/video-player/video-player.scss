@@ -1,0 +1,55 @@
+.video-player {
+  &__rolled {
+    top: 20px;
+    bottom: unset;
+  }
+
+  &__video.rolled {
+    max-width: 480px;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  &__start-button__wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__button {
+    display: block;
+    min-width: 30px;
+    min-height: 30px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    border-radius: 10px;
+    background-position: center center;
+    transition: background-size .1s;
+    padding: 2px;
+
+    &:hover {
+      background-size: 90%;
+    }
+
+    &.roll {
+      background-image: url('./assets/arrows-inside.png');
+    }
+
+    &.unroll {
+      background-image: url('./assets/arrows-outside.png');
+      transform: rotate(90deg);
+    }
+
+    &.play {
+      background-image: url('./assets/arrow-right.png');
+    }
+
+    &.pause {
+      background-image: url('./assets/pause.png');
+    }
+  }
+}

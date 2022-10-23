@@ -1,47 +1,56 @@
 import React from "react";
-import { IPlayer } from "interfaces";
-import { Button } from "app/components/button";
+import { IPlayer } from "app/models";
+import cn from "classnames";
+import { VideoPlayer } from "app/components/video-player";
+import { Modal } from "app/components/modal";
+import { useConnectedPlayer } from "./use-connected-player";
+import { StartButton } from "./media-player.start-button";
+import {MediaPlayerMode} from "./media-player.constants";
 import "./media-player.scss";
+import {TabSwitch} from "app/components/tabs";
+import {StoriesPlayer} from "app/components/stories-player";
+import {Tab} from "app/components/tabs/tab-switch/tab";
 
 type MediaPlayerProps = {
-    player: IPlayer | null;
-    autoplay?: boolean;
+    player: IPlayer;
+    mode: MediaPlayerMode;
 }
 
-export const MediaPlayer = React.forwardRef<HTMLDivElement, MediaPlayerProps>((props: MediaPlayerProps, ref) => {
-    const { player, autoplay } = props;
-    const [isPlaying, setIsPlaying] = React.useState(false);
+export const MediaPlayer = (props: MediaPlayerProps) => {
+    const { mode } = props;
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [isRolledUp, setIsRolledUp] = React.useState(false);
+    const connectedPlayer = useConnectedPlayer(props.player);
 
-    const handlePlay = React.useCallback(() => {
-        if (player) {
-            player.play();
-            setIsPlaying(true)
-        }
-    }, [player])
+    const handleStartPlay = () => {
+        setIsOpen(true);
+        connectedPlayer.play();
+    };
 
-    const handlePause = React.useCallback(() => {
-        if (player) {
-            player.pause();
-            setIsPlaying(false)
-        }
-    }, [player])
+    const handleClose = () => {
+        setIsOpen(false);
+        connectedPlayer.pause();
+    };
 
-    const cleanup = React.useCallback(() => {
-        player.destroy()
-    }, [player])
-
-    React.useEffect(() => {
-        if (player && autoplay) {
-            handlePlay();
-        }
-    }, [autoplay, player, handlePlay]);
-
-    React.useEffect(() => cleanup, [cleanup])
+    const toggleRollup = () => setIsRolledUp(prev => !prev);
 
     return (
         <div>
-            <Button onClick={isPlaying ? handlePause: handlePlay} content={isPlaying ? "Pause" : "Play"} />
-            <div ref={ref} className="media-player" />
+            { !isOpen && (
+                <div className="media-player__button-wrapper">
+                    <StartButton onClick={handleStartPlay} poster={connectedPlayer.getCurrentPosterSrc()} />
+                </div>
+            )}
+            <Modal onClose={handleClose} className={cn(isRolledUp && "media-player__rolled")} isOpen={isOpen}>
+                <TabSwitch value={mode}>
+                    <Tab value={MediaPlayerMode.Video}>
+                        <VideoPlayer player={connectedPlayer} isRolledUp={isRolledUp} toggleRollup={toggleRollup} />
+                    </Tab>
+                    <Tab value={MediaPlayerMode.Stories}>
+                        <StoriesPlayer player={connectedPlayer} />
+                    </Tab>
+                </TabSwitch>
+            </Modal>
         </div>
     )
-})
+}

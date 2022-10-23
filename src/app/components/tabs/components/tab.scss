@@ -1,0 +1,28 @@
+$active: #010101;
+$focus: #595959;
+$inactive: #a9a9a9;
+
+.tab {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: $inactive;
+  font-size: 1.6rem;
+  transition-property: color, border-color;
+  transition-duration: .3s;
+  transition-timing-function: ease-in-out;
+  border-bottom: transparent;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $focus;
+    border-bottom: 2px solid $focus;
+  }
+
+  &__selected:focus,
+  &__selected {
+    color: $active;
+    border-bottom: 2px solid $active;
+  }
+}
