@@ -6,10 +6,10 @@ import {StoriesPlayerController} from "app/models/player/stories-player";
 
 export const createPlayer = (files: IMediaFile[], mode: MediaPlayerMode): IPlayer => {
     switch (mode) {
-        case MediaPlayerMode.Video: {
+        case "Video": {
             return new VideoPlayerController().load(files);
         }
-        case MediaPlayerMode.Stories: {
+        case "Stories": {
             return new StoriesPlayerController().load(files)
         }
     }

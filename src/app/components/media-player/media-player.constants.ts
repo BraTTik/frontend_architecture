@@ -1,4 +1,1 @@
-export enum MediaPlayerMode {
-    Video,
-    Stories,
-}
+export type MediaPlayerMode = "Video" | "Stories";

@@ -1,4 +1,6 @@
-export type TabSwitchProps = {
-    value: string | number;
-    children: React.ReactNode;
+import {ReactNode} from "react";
+
+export type TabSwitchProps<T extends string | number> = {
+    value: T;
+    children: ReactNode;
 }
