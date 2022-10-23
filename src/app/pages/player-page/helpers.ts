@@ -11,10 +11,10 @@ const storiesPath = [cat1, cat2, cat3];
 export const getFiles = (type: MediaPlayerMode): IMediaFile[] => {
     switch (type) {
         case MediaPlayerMode.Video: {
-            return [new MediaFile("MP4", "BigBuckBunny", filePath, poster)]
+            return [new MediaFile({ type: "MP4", name: "BigBuckBunny", path: filePath, poster })]
         }
         case MediaPlayerMode.Stories: {
-            return storiesPath.map((path, index) => new MediaFile("JPG", `Cat-${index + 1}`, path, path))
+            return storiesPath.map((path, index) => new MediaFile({ type: "JPG", name: `Cat-${index + 1}`, path, poster: path }))
         }
     }
 }

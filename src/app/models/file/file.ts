@@ -1,7 +1,16 @@
 import { IMediaFile } from "./types";
 
 export class MediaFile<T extends string> implements IMediaFile {
-    constructor(private type: T, private name: string, private path: string, private poster: string) {
+    private readonly type: T;
+    private readonly name: string;
+    private readonly path: string;
+    private readonly poster: string;
+
+    constructor(props: { type: T, name: string, path: string, poster: string}) {
+        this.type = props.type;
+        this.name = props.name;
+        this.path = props.path;
+        this.poster = props.poster;
     }
 
     getName(): string {
