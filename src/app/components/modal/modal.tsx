@@ -8,18 +8,18 @@ export const Modal = (props: React.PropsWithChildren<ModalProps>) => {
     const { children, isOpen, className, onClose } = props;
     const modalRef = React.useRef<HTMLDialogElement>(null)
 
-    React.useEffect(() =>{
-        if (modalRef.current) {
-            isOpen && !modalRef.current.open ? modalRef.current.showModal() : modalRef.current.close();
-        }
-    }, [isOpen]);
-
-    const handleClose = () => {
+    const handleClose = React.useCallback(() => {
         if (modalRef.current) {
             modalRef.current.close();
-            onClose();
+            onClose?.();
         }
-    }
+    }, [onClose])
+
+    React.useEffect(() =>{
+        if (modalRef.current) {
+            isOpen && !modalRef.current.open ? modalRef.current.showModal() : handleClose();
+        }
+    }, [isOpen, handleClose]);
 
     return (
         <dialog ref={modalRef} className={cn("modal", className)}>

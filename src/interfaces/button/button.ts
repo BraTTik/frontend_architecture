@@ -3,5 +3,5 @@ import React from "react";
 export interface IButton {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     content: React.ReactNode;
-    type: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
